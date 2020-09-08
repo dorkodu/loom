@@ -67,7 +67,8 @@
       if ($jsonFile->isUseful()) {
         $jsonContent = $jsonFile->read();
         if ($jsonContent !== false) {
-          
+          $jsonAssocArray = JsonPreprocessor::parseJson($jsonContent);
+          $knottedsArray = self::resolveKnotteds($jsonAssocArray);
         } else return false;
       } else return false;
     }
