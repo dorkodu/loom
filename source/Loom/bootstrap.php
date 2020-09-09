@@ -1,6 +1,8 @@
 <?php
-error_reporting(E_ALL);
+  error_reporting(E_ALL);
 
+  use Cyudebeam\Utils\DorukReyiz;
+/*
 require_once "Utils/Timer.php";
 
 function calculateCallbackRuntime($callback)
@@ -14,6 +16,7 @@ function calculateCallbackRuntime($callback)
   } else return false;
 }
 
+
 echo calculateCallbackRuntime(function () {
   $c = hash_file("whirlpool", "README.md");
 });
@@ -23,3 +26,12 @@ echo "<br>";
 echo calculateCallbackRuntime(function () {
   $c = hash("whirlpool", file_get_contents("README.md"));
 });
+*/
+  $doruk = function ($className) {
+    $temp = explode("\\", $className);
+    echo $temp[count($temp) - 1];
+  };
+
+  spl_autoload_register($doruk);
+
+  DorukReyiz::hallet();

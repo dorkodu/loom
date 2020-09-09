@@ -37,9 +37,9 @@
     }
 
     /**
-     * Parses the autoload attribute of a package and 
+     * Parses the knotted attribute of an assoc array of loom.json and 
      * returns a meaningful autoload's list for that package
-     * @param Package $pkg
+     * @param array $jsonAssocArray
      */
     public static function resolveKnotteds(array $jsonAssocArray)
     {

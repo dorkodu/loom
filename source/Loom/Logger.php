@@ -134,7 +134,7 @@
 					copy($source, $targetDir);
 					return true;
 				} else return false; # not a useful filesystem node
-			} else return false; # invalid parameters
+			} else return false; # invalid directory
     }
     
     public static function getDirectoryPath($path)
