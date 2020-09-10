@@ -42,8 +42,7 @@
       return false;
     }
 
-
-    protected function loadMappedFile($prefix, $relativeClass)
+    private function loadMappedFile($prefix, $relativeClass)
     {
       if (isset($this->prefixes[$prefix]) === false)
         return false;
@@ -56,7 +55,7 @@
       }
     }
 
-    protected function requireFile($file)
+    private function requireFile($file)
     {
       if (is_file($file)) {
         require $file;
