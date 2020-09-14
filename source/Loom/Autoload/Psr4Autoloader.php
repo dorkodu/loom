@@ -32,8 +32,7 @@
       while (false !== $pos = strrpos($prefix, '\\')) {
         $prefix = substr($class, 0, $pos + 1);
         $relativeClass = substr($class, $pos + 1);
-        $mappedFile = $this->loadMappedFile($prefix, $relativeClass);
-        
+        $mappedFile = $this->loadMappedFile($prefix, $relativeClass);        
         if ($mappedFile)
           return $mappedFile;
         

@@ -45,22 +45,33 @@
       if(Logger::isUsefulDirectory($directoryPath)) {
         $srcDir = dir($directoryPath);
         while(gettype($entry = $srcDir->read()) !== "boolean") {
-          if($entry == '.' || $entry == '..' || is_dir($entry)) {
+          if($entry == '.' || $entry == '..') {
             continue;
           }
-          $node = $directoryPath.'/'.$entry;
 
+          $node = $directoryPath.'/'.$entry;
+          if (is_dir($entry)) {
+            $this->addFilesFromDirectory($node);
+          } else {
+            $this->addFileToClassmap($node);
+          }
         }
         $srcDir->close();
         return true;
       } else return false; # not a useful filesystem node
     }
 
+    /**
+     * Adds a PHP file to classmap
+     * @param string $entryPath the file path to work on
+     * @return bool true on success, false on failure
+     */
     private function addFileToClassmap($entryPath)
     {
       if (preg_match("@^(.*).php$@", $entryPath, $results)) {
         $this->classmap[$results[1]] = $entryPath;
-      }
+        return true;
+      } else return false;
     }
 
     /**
@@ -85,7 +96,14 @@
     {
       $possibleClassmap = self::parseClassmap($primitiveClassmap);
       if (is_array($possibleClassmap)) {
-        
+        foreach ($possibleClassmap as $possibleEntry) {
+          $this->addClassmapEntry($possibleEntry);
+        }
+
+        $autoloader = function ($className) {
+          
+        };
+
       } else return false; # given classmap is ugly
     }
   }
