@@ -99,14 +99,23 @@
     }
 
     /**
-     * Undocumented function
+     * loads a class from classmap
      *
      * @param string $class class name to autoload
      * @return void
      */
     public function autoloadFromClassmap($class)
     {
-      # code...
+      $pureClassName = self::resolveClassName($class);
+      if (array_key_exists($pureClassName, $this->classmap)) {
+        $filePath = $this->classmap[$pureClassName];
+        require $filePath;
+        unset($filePath);
+        if (class_exists($pureClassName)) {
+          unset($pureClassName);
+          return true;
+        } else return false; # class doesnt exist bro ?!
+      } else return false;
     }
 
     /**
@@ -120,7 +129,7 @@
         foreach ($possibleClassmap as $possibleEntry) {
           $this->addClassmapEntry($possibleEntry);
         }
+        spl_autoload_register(array($this, 'autoloadFromClassmap'));
       } else return false; # given classmap is ugly
     }
   }
-  
