@@ -69,9 +69,17 @@
     private function addFileToClassmap($entryPath)
     {
       if (preg_match("@^(.*).php$@", $entryPath, $results)) {
-        $this->classmap[$results[1]] = $entryPath;
+        $temp = explode(DIRECTORY_SEPARATOR, $results[1]);
+        $className = $temp[count($temp) - 1];
+        $this->classmap[$className] = $entryPath;
         return true;
       } else return false;
+    }
+
+    private static function resolveClassName($longClassName)
+    {
+      $temp = explode("\\", $longClassName);
+      return $temp[count($temp) - 1];
     }
 
     /**
@@ -83,9 +91,22 @@
     {
       if (Logger::isUsefulFile($entryPath)) {
         $this->addFileToClassmap($entryPath);
+        return true;
       } elseif (Logger::isUsefulDirectory($entryPath)) {
-        
+        $this->addFilesFromDirectory($entryPath);
+        return true;
       } else return false;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $class class name to autoload
+     * @return void
+     */
+    public function autoloadFromClassmap($class)
+    {
+      # code...
     }
 
     /**
@@ -99,11 +120,6 @@
         foreach ($possibleClassmap as $possibleEntry) {
           $this->addClassmapEntry($possibleEntry);
         }
-
-        $autoloader = function ($className) {
-          
-        };
-
       } else return false; # given classmap is ugly
     }
   }

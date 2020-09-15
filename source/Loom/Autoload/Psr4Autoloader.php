@@ -6,8 +6,9 @@
   {
     protected $prefixes = array();
     
-    public function register()
+    public function generateRegister()
     {
+      return [$this->prefixes, $this->loadClass];
       spl_autoload_register(array($this, 'loadClass'));
     }
 
@@ -26,32 +27,11 @@
         array_push($this->prefixes[$prefix], $baseDir);
     }
 
-    public function loadClass($class)
-    {
-      $prefix = $class;
-      while (false !== $pos = strrpos($prefix, '\\')) {
-        $prefix = substr($class, 0, $pos + 1);
-        $relativeClass = substr($class, $pos + 1);
-        $mappedFile = $this->loadMappedFile($prefix, $relativeClass);        
-        if ($mappedFile)
-          return $mappedFile;
-        
-        $prefix = rtrim($prefix, '\\');
-      }
-      return false;
-    }
+    
 
     private function loadMappedFile($prefix, $relativeClass)
     {
-      if (isset($this->prefixes[$prefix]) === false)
-        return false;
-      foreach ($this->prefixes[$prefix] as $baseDir) {
-        $file = $baseDir.str_replace('\\', '/', $relativeClass).'.php';
-        if ($this->requireFile($file)) {
-          return $file;
-        }
-        return false;
-      }
+      
     }
 
     private function requireFile($file)

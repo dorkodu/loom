@@ -1,7 +1,15 @@
 <?php
-  error_reporting(E_ALL);
 
-  use Cyudebeam\Utils\DorukReyiz;
+use Loom\Autoload\Psr4Autoloader;
+
+error_reporting(E_ALL);
+
+  require_once "Psr4Autoloader.php";
+
+  $unix = new Psr4Autoloader();
+  $unix->addNamespace("NS1");
+  use NS1\NS2\DorukReyiz;
+
 /*
 require_once "Utils/Timer.php";
 
@@ -29,7 +37,13 @@ echo calculateCallbackRuntime(function () {
 */
   $doruk = function ($className) {
     $temp = explode("\\", $className);
-    echo $temp[count($temp) - 1];
+    $onlyClassName = $temp[count($temp) - 1];
+    require_once $onlyClassName.".php";
+    if ($var) {
+      
+    } else {
+      
+    }
   };
 
   spl_autoload_register($doruk);

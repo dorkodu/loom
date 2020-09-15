@@ -2,8 +2,6 @@
 	namespace Loom;
 	
 	use Loom\Logger;
-	use Loom\Loot\Loot;
-  use Loom\Response;
   use Loom\Utils\PrimitiveTest;
 	
 	class Loom {
