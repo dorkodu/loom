@@ -1,18 +1,12 @@
 <?php
 
-use Loom\Autoload\Psr4Autoloader;
 
 error_reporting(E_ALL);
 
-  require_once "Psr4Autoloader.php";
 
-  $unix = new Psr4Autoloader();
-  $unix->addNamespace("NS1");
-  use NS1\NS2\DorukReyiz;
+require_once "Weaver/ClassmapAutoloader.php";
 
 /*
-require_once "Utils/Timer.php";
-
 function calculateCallbackRuntime($callback)
 {
   if (is_callable($callback)) {
@@ -35,17 +29,14 @@ echo calculateCallbackRuntime(function () {
   $c = hash("whirlpool", file_get_contents("README.md"));
 });
 */
-  $doruk = function ($className) {
-    $temp = explode("\\", $className);
-    $onlyClassName = $temp[count($temp) - 1];
-    require_once $onlyClassName.".php";
-    if ($var) {
-      
-    } else {
-      
-    }
-  };
+echo PHP_EOL;
+$cmap = array(".");
 
-  spl_autoload_register($doruk);
+$c = new ClassmapAutoloader();
+$c->register($cmap);
 
-  DorukReyiz::hallet();
+if (\Loom\Logger::isUsefulFile("d.php")) {
+  echo "All my loving :D";
+} else {
+  echo "I should have known better";
+}
