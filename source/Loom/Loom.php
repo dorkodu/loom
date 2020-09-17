@@ -5,11 +5,9 @@
   use Loom\Utils\PrimitiveTest;
 	
 	class Loom {
-		protected $loot;
 		protected $projectDirectory;
 		
 		public function __construct() {
-			$this->loot = new Loot();
 		}
 		
 		/* name: run
