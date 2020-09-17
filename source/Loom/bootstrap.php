@@ -28,7 +28,7 @@ echo "<br>";
 echo calculateCallbackRuntime(function () {
   $c = hash("whirlpool", file_get_contents("README.md"));
 });
-*/
+
 echo PHP_EOL;
 $cmap = array(".");
 
@@ -40,3 +40,22 @@ if (\Loom\Logger::isUsefulFile("d.php")) {
 } else {
   echo "I should have known better";
 }
+
+*/
+
+function generateClassmapContent(array $classmap)
+    {
+      $content = "";
+      $arrayCount = count($classmap);
+      for ($i=0; $i < $arrayCount; $i++) {
+        $content .= "'".$classmap[$i]."'";
+        if ($i !== ($arrayCount - 1)) {
+          $content .= ", ";
+        }
+      }
+    
+      return $content;
+    }
+
+    echo "<pre>";
+    var_dump(generateClassmapContent(['src/', 'bootstrap.php', "src/Dorukodu/"]));
