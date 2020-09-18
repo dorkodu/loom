@@ -1,11 +1,17 @@
 <?php
+  namespace Loom\Utils;
 
   class Psr4Autoloader
   {
     protected $prefixes = array();
+    protected $isPhar = false;
+    const USE_PHAR = 13;
     
-    public function register()
+    public function register($isPhar = false)
     {
+      if ($isPhar === 13) {
+        $this->isPhar = true;
+      }
       spl_autoload_register(array($this, 'loadClass'));
     }
 

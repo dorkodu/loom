@@ -1,61 +1,16 @@
 <?php
+  namespace Loom;
+
+  require_once "Utils/Psr4Autoloader.php";
+  
+  use Loom\Utils\Psr4Autoloader;
+
+  error_reporting(E_ALL);
 
 
-error_reporting(E_ALL);
-
-
-require_once "Weaver/ClassmapAutoloader.php";
-
-/*
-function calculateCallbackRuntime($callback)
-{
-  if (is_callable($callback)) {
-    $timer = new \Loom\Utils\Timer(true);
-    $timer->start();
-    call_user_func($callback);
-    $timer->stop();
-    return $timer->passedTime();
-  } else return false;
-}
-
-
-echo calculateCallbackRuntime(function () {
-  $c = hash_file("whirlpool", "README.md");
-});
-
-echo "<br>";
-
-echo calculateCallbackRuntime(function () {
-  $c = hash("whirlpool", file_get_contents("README.md"));
-});
-
-echo PHP_EOL;
-$cmap = array(".");
-
-$c = new ClassmapAutoloader();
-$c->register($cmap);
-
-if (\Loom\Logger::isUsefulFile("d.php")) {
-  echo "All my loving :D";
-} else {
-  echo "I should have known better";
-}
-
-*/
-
-function generateClassmapContent(array $classmap)
-    {
-      $content = "";
-      $arrayCount = count($classmap);
-      for ($i=0; $i < $arrayCount; $i++) {
-        $content .= "'".$classmap[$i]."'";
-        if ($i !== ($arrayCount - 1)) {
-          $content .= ", ";
-        }
-      }
-    
-      return $content;
-    }
-
-    echo "<pre>";
-    var_dump(generateClassmapContent(['src/', 'bootstrap.php', "src/Dorukodu/"]));
+  $psr4Autoloader = new Psr4Autoloader();
+  $psr4Autoloader->forPhar("simplest.phar");
+  $psr4Autoloader->register();
+  
+  # registering all namespaces used in Loom
+  $psr4Autoloader->addNamespace("Loom", ".");

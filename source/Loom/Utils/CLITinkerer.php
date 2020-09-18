@@ -1,4 +1,6 @@
 <?php
+  namespace Loom\Utils;
+  
   class CLITinkerer
   {
     public static function readLine($optionalMessage = null)
