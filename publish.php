@@ -9,5 +9,7 @@
 
   $simplestPhar = new PharPublisher('loom.phar', './source', './publish');
   $simplestPhar->setBeforeEffect($greet);
-  $simplestPhar->setDefaultStub("Loom/bootstrap.php");
+  $simplestPhar->setDefaultStub("bootstrap.php");
   $simplestPhar->publish();
+
+  rename("publish/loom.phar", "publish/loom-".time().".phar");

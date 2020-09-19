@@ -91,11 +91,11 @@
     public function renderBrand()
     {
       TerminalUI::bold("
-      __     _____   _____  __    __
-      ||    ||   || ||   || ||\  /||
-      ||    ||   || ||   || || \/ ||
-      ||___ ||___|| ||___|| ||    ||
-      ¨¨¨¨¨  ¨¨¨¨¨   ¨¨¨¨¨  ¨¨    ¨¨
+  __     _____   _____  __    __
+  ||    ||   || ||   || ||\  /||
+  ||    ||   || ||   || || \/ ||
+  ||___ ||___|| ||___|| ||    ||
+  ¨¨¨¨¨  ¨¨¨¨¨   ¨¨¨¨¨  ¨¨    ¨¨
       ");
       CLITinkerer::breakLine();
     }
@@ -108,17 +108,16 @@
       $this->greet();
 
       $aboutString = "
-    
-    Loom is created to solve autoloading problem in a simple & efficient way.
+  Loom is created to solve autoloading problem in a simple & efficient way.
 
-    You only declare where can Loom find the class, as directory, filename or namespace.
-    Loom does the dirty work for you. No magic, just simplicity :D
-    You require a file that Loom generated for you, that's it!
+  You only declare where can Loom find the class, as directory, filename or namespace.
+  Loom does the dirty work for you. No magic, just simplicity :D
+  You require a file that Loom generated for you, that's it!
       ";
 
       CLITinkerer::writeLine($aboutString);
       TerminalUI::underDashedTitle("Author");
-      TerminalUI::titledParagraph("Doruk Dorkodu", "Software Engineer, Founder & Chief @ Dorkodu".PHP_EOL."See more 'https://doruk.dorkodu.com".PHP_EOL."Email : doruk@dorkodu.com");
+      TerminalUI::titledParagraph("Doruk Dorkodu", "Software Engineer, Founder & Chief @ Dorkodu".PHP_EOL."  See more 'https://doruk.dorkodu.com".PHP_EOL."  Email : doruk@dorkodu.com".PHP_EOL);
 
     }
 
@@ -150,20 +149,22 @@
       $this->greet();
       CLITinkerer::breakLine();
       CLITinkerer::writeLine("If you are just curious about Loom, type 'about' command to know more.");
+      CLITinkerer::breakLine();
       
       # how to use loom ?
       TerminalUI::underDashedTitle("How to use Loom?");
-      CLITinkerer::writeLine("Launch Loom in the directory you want to work in.");
-      CLITinkerer::writeLine("For the first time in that directory, use 'init' command.");
-      CLITinkerer::writeLine("It will set the environment, and create some files/directories.");
-      CLITinkerer::writeLine("Then you declare your depencencies as classmap or as PSR-4 namespaces, with JSON format, in 'loom.json' file.");
-      CLITinkerer::writeLine("When you are done, run 'weave' command.");
-      CLITinkerer::writeLine("Loom will 'weave' your dependencies and create you a file './loot/loom-weaver.php' that you can require in your script.");
-      CLITinkerer::write("That's it! Don't forget to run 'weave' after everytime you manipulate 'loom.json' file.");
+      CLITinkerer::writeLine("  Launch Loom in the directory you want to work in.");
+      CLITinkerer::writeLine("  For the first time in that directory, use 'init' command.");
+      CLITinkerer::writeLine("  It will set the environment, and create some files/directories.");
+      CLITinkerer::writeLine("  Then you declare your depencencies as classmap or as PSR-4 namespaces, with JSON format, in 'loom.json' file.");
+      CLITinkerer::writeLine("  When you are done, run 'weave' command.");
+      CLITinkerer::writeLine("  Loom will 'weave' your dependencies and create you a file './loot/loom-weaver.php' that you can require in your script.");
+      CLITinkerer::writeLine("  That's it! Don't forget to run 'weave' after everytime you manipulate 'loom.json' file.");
 
       # useable commands list
       TerminalUI::underDashedTitle("Possible Actions");
       CLITinkerer::writeLine("List of available commands :");
+      CLITinkerer::breakLine();
       TerminalUI::dictionaryEntry("install", "Installs Loom, so you can use directly typing 'loom <command>' in terminal.");
       TerminalUI::dictionaryEntry("init", "Loom will prepare the project directory for its operations. create some files/directories for its needs.");
       TerminalUI::dictionaryEntry("about", "You can learn more about Loom. It's recommended to read some stuff :D");
