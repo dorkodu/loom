@@ -8,4 +8,5 @@
 
   $simplestPhar = new PharPublisher('loom.phar', './source', './publish');
   $simplestPhar->setBeforeEffect($greet);
+  $simplestPhar->setDefaultStub("Loom/bootstrap.php");
   $simplestPhar->publish();

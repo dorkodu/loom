@@ -21,6 +21,16 @@
       echo $message.PHP_EOL;
     }
 
+    public static function breakLine()
+    {
+      echo PHP_EOL;
+    }
+
+    public static function write($message)
+    {
+      echo $message;
+    }
+
     public static function getScriptName()
     {
       return $_SERVER['argv'][0];

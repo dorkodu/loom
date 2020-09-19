@@ -4,15 +4,18 @@
   class Psr4Autoloader
   {
     protected $prefixes = array();
-    protected $isPhar = false;
-    const USE_PHAR = 13;
-    
-    public function register($isPhar = false)
+    protected $pharName = null;
+
+    public function register()
     {
-      if ($isPhar === 13) {
-        $this->isPhar = true;
-      }
       spl_autoload_register(array($this, 'loadClass'));
+    }
+
+    public  function usePharMethod($pharName) {
+      if (is_string($pharName)) {
+        $this->pharName = $pharName;
+        return true;
+      } else return false;
     }
 
     public function addNamespace($prefix, $baseDir, $prepend = false)
@@ -29,6 +32,13 @@
         array_push($this->prefixes[$prefix], $baseDir);
     }
 
+    public function isForPhar()
+    {
+      if (!empty($this->pharName) && is_string($this->pharName)) {
+        return true;
+      } else return false;
+    }
+
     public function loadClass($class)
     {
       $prefix = $class;
@@ -37,7 +47,7 @@
        
         $relativeClass = substr($class, $pos + 1);
 
-        $mappedFile = $this->loadMappedFile($prefix, $relativeClass);
+        $mappedFile = $this->loadMappedFile($prefix, $relativeClass);          
 
         if ($mappedFile)
           return $mappedFile;
@@ -63,8 +73,14 @@
 
     protected function requireFile($file)
     {
-      if (is_file($file)) {
-        require $file;
+      if ($this->isForPhar()) {
+        $path = "phar://".$this->pharName."/".$file;
+      } else {
+        $path = $file;
+      }
+      
+      if (is_file($path)) {
+        require $path;
         return true;
       }
       return false;

@@ -1,4 +1,4 @@
-Loom - Dependency Utility for PHP
+Loom - the Minimalist Dependency Utility for PHP
 ========================================
 
 Loom helps you handle and automate the autoloading process (we say weaving) of (in)dependent code bundles in PHP applications.
@@ -9,9 +9,9 @@ See [https://opensource.dorkodu.com/loom](https://opensource.dorkodu.com/loom) f
 Installation / Usage
 --------------------
 
-Download and install Loom by following the [official instructions] (https://opensource.dorkodu.com/loom/download).
+Download and install Loom by following the [official instructions] (https://opensource.dorkodu.com/loom/#download).
 
-For usage, see [the documentation](https://opensource.dorkodu.com/loom/doc).
+For usage, see [the documentation](https://opensource.dorkodu.com/loom).
 
 Requirements
 ------------
