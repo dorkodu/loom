@@ -4,6 +4,7 @@
 
   $greet = function () {
     echo PHP_EOL.">> Dorkodu Phar Publisher";
+    echo PHP_EOL.">> This code will build and publish Loom.";
   };
 
   $simplestPhar = new PharPublisher('loom.phar', './source', './publish');

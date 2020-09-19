@@ -5,7 +5,6 @@
   use Loom\Utils\PrimitiveTest;
   use Loom\Utils\CLITinkerer;
   use Loom\Utils\TerminalUI;
-  use Loom\Controller;
 	
 	class Loom {
     protected $projectDirectory;
@@ -23,18 +22,18 @@
      * Loom's igniter :D
 		 */
 		public function run() {
-			if($this->setTheEnvironment()) {
-				/* checks for updates
+			if(true) {
+				/**
+         * checks for updates
 				 * checks if config is OK
 				 * checks for loom.json, loom.lock files
-				 * 
          * 
-         * 
-         * 
-         * */
+         */
        $this->route();
-      } else CLITinkerer::writeLine(" Cannot set the environment."); # cannot setup the environment
-		}
+      } else {  # cannot setup the environment
+        CLITinkerer::writeLine("Cannot set the environment. Check if current directory is useful");
+      }
+    }
 		
     /**
      * Simply routes according to user commands.
@@ -189,6 +188,7 @@
        * an empty template loom.json
        * generate that template's  hash and lock the state into loom.lock
        */
+      CLITinkerer::writeLine("inits the Loom");
     }
 
     /**
@@ -205,6 +205,7 @@
        * --else 
        *    -> dont touch it :P
        */
+      CLITinkerer::writeLine("weaved!");
     }
 
     /**
@@ -217,5 +218,6 @@
        * if state is changed generate a fresh autoloading script, and lock the state.
        * else dont touch it :P
        */
+      CLITinkerer::writeLine("install you mean?");
     }
 	}
