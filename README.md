@@ -1,5 +1,5 @@
 Loom - the Minimalist Dependency Utility for PHP
-========================================
+================================================
 
 Loom helps you handle and automate the autoloading process (we say weaving) of (in)dependent code bundles in PHP applications.
 
