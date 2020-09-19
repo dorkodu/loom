@@ -13,5 +13,6 @@
   $simplestPhar->publish();
 
   $timestamp = time();
-  rename("publish/loom.phar", "publish/loom_".$timestamp.".phar");
-  echo ">> Newest Loom is :: loom_".$timestamp.".phar".PHP_EOL;
+  $newName = "loom";
+  rename("publish/loom.phar", "publish/".$newName);
+  echo ">> Newest Loom is :: $newName".PHP_EOL;

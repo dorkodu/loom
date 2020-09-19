@@ -192,7 +192,8 @@
        * an empty template loom.json
        * generate that template's  hash and lock the state into loom.lock
        */
-      CLITinkerer::writeLine("inits the Loom");
+      
+      
       
     }
 
