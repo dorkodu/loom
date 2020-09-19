@@ -12,4 +12,6 @@
   $simplestPhar->setDefaultStub("bootstrap.php");
   $simplestPhar->publish();
 
-  rename("publish/loom.phar", "publish/loom-".time().".phar");
+  $timestamp = time();
+  rename("publish/loom.phar", "publish/loom_".$timestamp.".phar");
+  echo PHP_EOL.">> Newest Loom is :: loom_".$timestamp.".phar";

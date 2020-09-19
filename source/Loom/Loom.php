@@ -163,7 +163,7 @@
 
       # useable commands list
       TerminalUI::underDashedTitle("Possible Actions");
-      CLITinkerer::writeLine("List of available commands :");
+      CLITinkerer::writeLine("  List of available commands :");
       CLITinkerer::breakLine();
       TerminalUI::dictionaryEntry("install", "Installs Loom, so you can use directly typing 'loom <command>' in terminal.");
       TerminalUI::dictionaryEntry("init", "Loom will prepare the project directory for its operations. create some files/directories for its needs.");
