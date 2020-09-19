@@ -14,4 +14,4 @@
 
   $timestamp = time();
   rename("publish/loom.phar", "publish/loom_".$timestamp.".phar");
-  echo PHP_EOL.">> Newest Loom is :: loom_".$timestamp.".phar";
+  echo ">> Newest Loom is :: loom_".$timestamp.".phar".PHP_EOL;

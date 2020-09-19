@@ -160,6 +160,7 @@
       CLITinkerer::writeLine("  When you are done, run 'weave' command.");
       CLITinkerer::writeLine("  Loom will 'weave' your dependencies and create you a file './loot/loom-weaver.php' that you can require in your script.");
       CLITinkerer::writeLine("  That's it! Don't forget to run 'weave' after everytime you manipulate 'loom.json' file.");
+      CLITinkerer::breakLine();
 
       # useable commands list
       TerminalUI::underDashedTitle("Possible Actions");
@@ -170,6 +171,7 @@
       TerminalUI::dictionaryEntry("about", "You can learn more about Loom. It's recommended to read some stuff :D");
       TerminalUI::dictionaryEntry("weave", "Loom interprets the loom.json file and 'weaves' your dependencies to your app. It produces a loom-weaver.php file that you require in your app, and forget about autoloading hell!");
       TerminalUI::dictionaryEntry("help", "The simple documentation on Loom, which is exteremely useful. You are reading it now :) But you don't need to worry about underlying logic. It is not magic, created by a 16 yo software engineer :D");
+      CLITinkerer::breakLine();
 
       # stuff related to Loom
       TerminalUI::underDashedTitle("What Loom does in my directory?");
@@ -177,6 +179,7 @@
       TerminalUI::dictionaryEntry("loom.lock", "Loom will save its last run state in this file.");
       TerminalUI::dictionaryEntry("loot/ directory", "You can put your dependent bundles (files/directories) in this directory. Loom uses 'loot/' for storing its app-related files. It can be used as a single repository of vendor-lock-in code.");
       TerminalUI::dictionaryEntry("loot/loom-weaver.php", "Loom's monolithic/minimalistic autoloading script. You just require this file in your app. It will do the dirty work for you :D");
+      CLITinkerer::breakLine();
     }
 
     /**
@@ -190,6 +193,7 @@
        * generate that template's  hash and lock the state into loom.lock
        */
       CLITinkerer::writeLine("inits the Loom");
+      
     }
 
     /**
