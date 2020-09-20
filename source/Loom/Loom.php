@@ -9,6 +9,7 @@
   use Loom\Utils\TerminalUI;
   use Loom\Json\JsonFile;
   use Loom\Json\JsonPreprocessor;
+  use Loom\Weaver\KnotterGenerator;
 
   class Loom {
     protected $projectDirectory;
@@ -169,7 +170,7 @@
             # loom.json production
             $loomJsonPath = $this->projectDirectory."/loom.json";
             if (Logger::createFile($loomJsonPath)) {
-              
+
               $loomJson = new JsonFile($loomJsonPath);
               unset($loomJsonPath);
               $loomJsonTemplate = $this->generateLoomJsonTemplate();
@@ -179,14 +180,14 @@
                 self::consoleLog("Loom successfully initialised the current directory.");
                 return true;
               } else {
-                self::throwIssue("PROBLEM", "Couldn't lock the current state.");
+                self::breakRunning("PROBLEM", "Couldn't lock the current state.");
               }
             } else {
-              self::throwIssue("PROBLEM", "Couldn't create loom.json file.");
+              self::breakRunning("PROBLEM", "Couldn't create loom.json file.");
             }
           }
        } else {
-        self::throwIssue("PROBLEM", "Current directory is not useful. Check read/write permissions.");
+        self::breakRunning("PROBLEM", "Current directory is not useful. Check read/write permissions.");
        }
     }
 
@@ -222,15 +223,26 @@
         self::consoleLog("Directory is useful. Loom is running.");
         
         if ($this->isInittedDirectory()) {
-          self::consoleLog("Current directory is initted. Look for dependency declarations.");
           
+          self::consoleLog("Current directory is OK. Looking for dependency declarations.");
           $loomJson = new JsonFile($this->projectDirectory."/loom.json");
-          DependencyLocker::isCurrentStateLocked($loomJson);
-          if ($loomJson->) {
-            # code...
-          } else $this->throwIssue("PROBLEM", "'loom.json' is not useful. Check read/write permissions. OR file is not useful.");
-        } else $this->throwIssue("PROBLEM", "Current directory is not initted. Please run 'init' before.");  
-      } else self::throwIssue("PROBLEM", "Current directory is not useful. Check for read/write permissions.");
+          
+          if ($loomJson->isUseful()) {
+            
+            $isStateLocked = DependencyLocker::isCurrentStateLocked($loomJson);
+            if ($isStateLocked) {
+              $this->breakRunning("NOTICE", "Loom has already weaved this dependencies. Current state is locked.");
+            } else {
+              $knottedArray = DependencyResolver::resolve($loomJson);
+              if(is_array($knottedArray) && !empty($knottedArray)) {
+                echo PHP_EOL;
+                var_dump($knottedArray);
+                echo PHP_EOL;
+              } else return false; # 
+            }
+          } else $this->breakRunning("PROBLEM", "'loom.json' is not useful. Check read/write permissions or if it exists.");
+        } else $this->breakRunning("PROBLEM", "Current directory is not initted. Please run 'init' before.");  
+      } else self::breakRunning("PROBLEM", "Current directory is not useful. Check for read/write permissions.");
     }
 
     /**
@@ -243,17 +255,17 @@
        * if state is changed generate a fresh autoloading script, and lock the state.
        * else dont touch it :P
        */
-      self::throwIssue("NOTICE", "This feature is out of order.");
+      self::breakRunning("NOTICE", "This feature is out of order.");
     }
 
-    public static function consoleLog($text)
+    private static function consoleLog($text)
     {
       CLITinkerer::writeLine("> ".$text);
     }
 
-    public static function throwIssue($type, $message)
+    private static function breakRunning($topic, $content)
     {
-      CLITinkerer::writeLine("> ".$type." : ".$message);
+      CLITinkerer::writeLine("> ".$topic." : ".$content);
       exit;
     }
 
@@ -262,10 +274,20 @@
      * 
      * @return array the template string content of a loom.json file
      **/
-    public function generateLoomJsonTemplate()
+    private function generateLoomJsonTemplate()
     {
       $classmap = array();
       $namespaces = array();
       return array("knotted" => array("classmap" => $classmap, "namespaces" => $namespaces));
+    }
+
+    /**
+     * Inits a loot/ dir in project directory, then create
+     *
+     * @return void
+     */
+    private function createLoot()
+    {
+      
     }
 	}

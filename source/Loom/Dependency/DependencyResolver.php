@@ -10,12 +10,12 @@
     /**
      * Returns the knotted array for a given package
      *
-     * @param array $containerArray the root array of loom.json
+     * @param array $rootArray the root array of loom.json
      * 
      * @return false on failure
      * @return array the required array for package
      */
-    protected static function getKnottedArray(array $rootArray)
+    private static function getKnottedArray(array $rootArray)
     {
       if (!empty($rootArray)) {
         return self::getArrayFromArray("knotted", $rootArray);
@@ -28,7 +28,7 @@
      * @return false on failure
      * @return array on success
      */
-    protected static function getArrayFromArray($needle, array $haystack)
+    private static function getArrayFromArray($needle, array $haystack)
     {
       if (array_key_exists($needle, $haystack)) {
         if (is_array($haystack[$needle])) {
@@ -42,26 +42,29 @@
     /**
      * Parses the 'knotted' attribute of the root array of loom.json and 
      * returns a meaningful knotted's array
+     * 
      * @param array $jsonAssocArray
      */
-    protected static function resolveKnotteds(array $jsonAssocArray)
+    private static function resolveKnotteds(array $jsonAssocArray)
     {
       $knotteds = self::getKnottedArray($jsonAssocArray);
       if ($knotteds !== false) {
         $namespacesList = self::getArrayFromArray('namespaces', $knotteds);
         $classmap = self::getArrayFromArray('classmap', $knotteds);
-        $results = array();
-        if (is_array($namespacesList) && !empty($namespacesList))
-          array_push($results, $namespacesList);
-        if (is_array($classmap) && !empty($classmap))
-          array_push($results, $classmap);
-        return $results;
+
+        if ($namespacesList === false)
+          $knotteds["namespaces"] = array();
+        if ($classmap === false)
+          $knotteds["classmap"] = array();
+        return $knotteds;
       } else return false; # at any error
     }
   
     /**
      * Resolves dependencies for a given package
+     * 
      * @param JsonFile jsonFile object for loom.json file
+     * 
      * @return array of knotted array.
      * @return false on failure
      */
@@ -69,9 +72,19 @@
     {
       if ($jsonFile->isUseful()) {
         $jsonContent = $jsonFile->read();
+        
         if ($jsonContent !== false) {
-          $jsonAssocArray = JsonPreprocessor::parseJson($jsonContent);
-          $knottedsArray = self::resolveKnotteds($jsonAssocArray);
+
+          $jsonArray = JsonPreprocessor::parseJson($jsonContent);
+          $rootArray = array();
+
+          $knottedArray = self::resolveKnotteds($jsonArray);
+
+          if ($knottedArray !== false) {
+            $rootArray["knotted"] = $knottedArray;
+          }
+
+          return $rootArray;
         } else return false;
       } else return false;
     }
