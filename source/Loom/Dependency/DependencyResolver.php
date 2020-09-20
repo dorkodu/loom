@@ -48,6 +48,7 @@
     private static function resolveKnotteds(array $jsonAssocArray)
     {
       $knotteds = self::getKnottedArray($jsonAssocArray);
+
       if ($knotteds !== false) {
         $namespacesList = self::getArrayFromArray('namespaces', $knotteds);
         $classmap = self::getArrayFromArray('classmap', $knotteds);
@@ -65,7 +66,7 @@
      * 
      * @param JsonFile jsonFile object for loom.json file
      * 
-     * @return array of knotted array.
+     * @return array root dependencies array.
      * @return false on failure
      */
     public static function resolve(JsonFile $jsonFile)

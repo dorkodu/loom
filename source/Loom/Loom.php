@@ -233,12 +233,17 @@
             if ($isStateLocked) {
               $this->breakRunning("NOTICE", "Loom has already weaved this dependencies. Current state is locked.");
             } else {
-              $knottedArray = DependencyResolver::resolve($loomJson);
-              if(is_array($knottedArray) && !empty($knottedArray)) {
-                echo PHP_EOL;
-                var_dump($knottedArray);
-                echo PHP_EOL;
-              } else return false; # 
+              $rootDependenciesArray = DependencyResolver::resolve($loomJson);
+              if(is_array($rootDependenciesArray) && !empty($rootDependenciesArray)) {
+                
+                $generatedAutoloader = KnotterGenerator::generate($rootDependenciesArray);
+                if (is_string($generatedAutoloader)) {
+                  $this->createLoot($generatedAutoloader);
+                } else {
+                  $this->breakRunning("PROBLEM", "Coulnd't generate autoloader. Empty root dependencies array.");                  
+                }
+
+              } else $this->breakRunning("PROBLEM", "Couldn't resolve dependencies. Reason may be your loom.json file."); 
             }
           } else $this->breakRunning("PROBLEM", "'loom.json' is not useful. Check read/write permissions or if it exists.");
         } else $this->breakRunning("PROBLEM", "Current directory is not initted. Please run 'init' before.");  
@@ -265,7 +270,10 @@
 
     private static function breakRunning($topic, $content)
     {
-      CLITinkerer::writeLine("> ".$topic." : ".$content);
+      CLITinkerer::write("> ");
+      TerminalUI::bold($topic);
+      CLITinkerer::write(" : ".$content);
+      CLITinkerer::breakLine();
       exit;
     }
 
@@ -282,12 +290,56 @@
     }
 
     /**
-     * Inits a loot/ dir in project directory, then create
+     * Creates a loot/ dir in project directory, then inits a Loot there.
      *
-     * @return void
+     * @param string $autoloaderContent
+     * 
+     * @return boolean true on success, false on failure
      */
-    private function createLoot()
+    private function createLoot($autoloaderContent)
     {
-      
+      # loot/ directory
+      if (!Logger::isUsefulDirectory($this->projectDirectory)) {
+        if (!Logger::createDirectory($this->projectDirectory."/loot"))
+          return false;
+      }
+
+      # loot/loom/ directory
+      if (!Logger::isUsefulDirectory($this->projectDirectory."/loot/loom")) {
+        if (!Logger::createDirectory($this->projectDirectory."/loot/loom"))
+          return false;
+      }
+
+      # loot/loom/Psr4Autoloader.php
+      $psr4Autoloader = $this->projectDirectory."/loot/loom/Psr4Autoloader.php";
+      if (!Logger::isUsefulFile($psr4Autoloader)) {
+        if (!Logger::createFile($psr4Autoloader))
+          return false;
+      }
+
+      if (!Logger::putFileContents($psr4Autoloader, KnotterGenerator::getPsr4AutoloaderContent()))
+      return false;
+
+
+      # loot/loom/ClassmapAutoloader.php
+      $classmapAutoloader = $this->projectDirectory."/loot/loom/ClassmapAutoloader.php";
+      if (!Logger::isUsefulFile($classmapAutoloader)) {
+        if (!Logger::createFile($classmapAutoloader))
+          return false;
+      }
+
+      if (!Logger::putFileContents($classmapAutoloader, KnotterGenerator::getClassmapAutoloaderContent()))
+        return false;
+
+
+      # loot/loom-weaver.php
+      $loomWeaver = $this->projectDirectory."/loot/loom-weaver.php";
+      if (!Logger::isUsefulFile($loomWeaver)) {
+        if (!Logger::createFile($loomWeaver))
+          return false;
+      }
+
+      if (!Logger::putFileContents($loomWeaver, $autoloaderContent))
+        return false;
     }
 	}
