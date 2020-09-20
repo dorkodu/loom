@@ -4,16 +4,12 @@
 
   # psr-4 namespace autoloading
 
-  $universalNamespaces = array('Loom' => 'source/Loom/', 'Loom\\Utils' => 'source/Loom/Utils/');
+  require_once "loom/Psr4Autoloader.php";
+
+  $universalNamespaces = array('Loom' => 'source/Loom/');
   $psr4Autoloader = new Psr4Autoloader();
   $psr4Autoloader->register();
 
   foreach ($universalNamespaces as $namespace => $path) {
     $psr4Autoloader->addNamespace($namespace, $path);
   }
-  
-  # classmap autoloading
-
-  $universalClassmap = array('bootstrap.php');
-  $classmapWeaver = new ClassmapAutoloader();
-  $classmapWeaver->register($universalClassmap);

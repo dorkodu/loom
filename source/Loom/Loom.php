@@ -233,16 +233,32 @@
             if ($isStateLocked) {
               $this->breakRunning("NOTICE", "Loom has already weaved this dependencies. Current state is locked.");
             } else {
+              
               $rootDependenciesArray = DependencyResolver::resolve($loomJson);
+              
               if(is_array($rootDependenciesArray) && !empty($rootDependenciesArray)) {
                 
-                $generatedAutoloader = KnotterGenerator::generate($rootDependenciesArray);
-                if (is_string($generatedAutoloader)) {
-                  $this->createLoot($generatedAutoloader);
-                } else {
-                  $this->breakRunning("PROBLEM", "Coulnd't generate autoloader. Empty root dependencies array.");                  
-                }
+                $this->consoleLog("Resolved dependencies.");
 
+                $isLootReady = $this->createLoot();
+                if ($isLootReady) {
+                  $this->consoleLog("Initted Loot.");
+
+                  $weaveResult = $this->saveLoomWeaver($rootDependenciesArray);
+                  if ($weaveResult) {
+                    $this->consoleLog("Generated the new weaver script.");
+                    
+                    $lockResult = DependencyLocker::lock($loomJson);
+                    if ($lockResult) {
+                      $this->consoleLog("Locked the current state.");
+                      
+                    } else {
+                      
+                    }
+
+                  } else $this->breakRunning("PROBLEM", "Couldn't generate or save the new weaver script.");
+               
+                } else $this->breakRunning("PROBLEM", "Coulnd't create or init Loot (loot/ directory). Check your read/write permissions.");
               } else $this->breakRunning("PROBLEM", "Couldn't resolve dependencies. Reason may be your loom.json file."); 
             }
           } else $this->breakRunning("PROBLEM", "'loom.json' is not useful. Check read/write permissions or if it exists.");
@@ -292,11 +308,9 @@
     /**
      * Creates a loot/ dir in project directory, then inits a Loot there.
      *
-     * @param string $autoloaderContent
-     * 
      * @return boolean true on success, false on failure
      */
-    private function createLoot($autoloaderContent)
+    private function createLoot()
     {
       # loot/ directory
       if (!Logger::isUsefulDirectory($this->projectDirectory)) {
@@ -311,14 +325,15 @@
       }
 
       # loot/loom/Psr4Autoloader.php
-      $psr4Autoloader = $this->projectDirectory."/loot/loom/Psr4Autoloader.php";
-      if (!Logger::isUsefulFile($psr4Autoloader)) {
-        if (!Logger::createFile($psr4Autoloader))
+      $psr4AutoloaderPath = $this->projectDirectory."/loot/loom/Psr4Autoloader.php";
+      if (!Logger::isUsefulFile($psr4AutoloaderPath)) {
+        if (!Logger::createFile($psr4AutoloaderPath))
           return false;
       }
 
-      if (!Logger::putFileContents($psr4Autoloader, KnotterGenerator::getPsr4AutoloaderContent()))
-      return false;
+      $psr4AutoloaderContent = KnotterGenerator::getPsr4AutoloaderContent();
+      if (!Logger::putFileContents($psr4AutoloaderPath, $psr4AutoloaderContent))
+        return false;
 
 
       # loot/loom/ClassmapAutoloader.php
@@ -328,18 +343,33 @@
           return false;
       }
 
-      if (!Logger::putFileContents($classmapAutoloader, KnotterGenerator::getClassmapAutoloaderContent()))
+      $classmapAutoloaderContent = KnotterGenerator::getClassmapAutoloaderContent();
+      if (!Logger::putFileContents($classmapAutoloader, $classmapAutoloaderContent))
         return false;
 
+      return true;
+    }
 
-      # loot/loom-weaver.php
-      $loomWeaver = $this->projectDirectory."/loot/loom-weaver.php";
-      if (!Logger::isUsefulFile($loomWeaver)) {
-        if (!Logger::createFile($loomWeaver))
-          return false;
-      }
+    /**
+     * Saves loom-weaver.php file
+     *
+     * @param array $rootDependenciesArray the root array of loom.json.
+     *
+     * @return true on success
+     * @return false on failure
+     **/
+    public function saveLoomWeaver($rootDependenciesArray)
+    {
+      $contents = KnotterGenerator::generate($rootDependenciesArray);
+      if (is_string($contents)) {
+        $loomWeaverPath = $this->projectDirectory."/loot/loom-weaver.php";
+        if (!Logger::isUsefulFile($loomWeaverPath)) {
+          if (!Logger::createFile($loomWeaverPath))
+            return false;
+        }
 
-      if (!Logger::putFileContents($loomWeaver, $autoloaderContent))
-        return false;
+        if (!Logger::putFileContents($loomWeaverPath, $contents))
+          return false;  
+      } else return false;
     }
 	}

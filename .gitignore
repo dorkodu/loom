@@ -2,3 +2,6 @@ source/Loom/bootstrap.php
 publish/
 loom.json
 loom.lock
+loot/
+loot/loom/ClassmapAutoloader.php
+loot/loom/Psr4Autoloader.php

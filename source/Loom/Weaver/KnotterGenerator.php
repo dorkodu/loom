@@ -40,6 +40,8 @@
 
                 # psr-4 namespace autoloading
 
+                require_once "loom/Psr4Autoloader.php";
+
                 \$universalNamespaces = array($psr4ArrayString);
                 \$psr4Autoloader = new Psr4Autoloader();
                 \$psr4Autoloader->register();
@@ -62,6 +64,8 @@
               $classmapAutoloadScript = <<<PHP
                 
                 # classmap autoloading
+
+                require_once "loom/ClassmapAutoloader.php";
 
                 \$universalClassmap = array($classmapArrayString);
                 \$classmapWeaver = new ClassmapAutoloader();
@@ -128,25 +132,23 @@
 
     /**
      * Gets the contents of the classmap autoloader script.
+     * 
      * @return string script content
+     * @return false on failure
      **/
     public static function getClassmapAutoloaderContent()
     {
-      $contents = Logger::getFileContents("ClassmapAutoloader.php");
-      if (is_string($contents) && $contents !== false) {
-        return $contents;
-      } else return false;
+      return file_get_contents("phar://loom.phar/Loom/Weaver/ClassmapAutoloader.php");
     }
 
     /**
      * Gets the contents of the PSR-4 autoloader script.
+     * 
      * @return string script content
+     * @return false on failure
      **/
     public static function getPsr4AutoloaderContent()
     {
-      $contents = Logger::getFileContents("Psr4Autoloader.php");
-      if (is_string($contents) && $contents !== false) {
-        return $contents;
-      } else return false;
+      return file_get_contents("phar://loom.phar/Loom/Weaver/Psr4Autoloader.php");
     }
   }
