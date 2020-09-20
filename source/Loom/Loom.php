@@ -224,6 +224,11 @@
         if ($this->isInittedDirectory()) {
           self::consoleLog("Current directory is initted. Look for dependency declarations.");
           
+          $loomJson = new JsonFile($this->projectDirectory."/loom.json");
+          DependencyLocker::isCurrentStateLocked($loomJson);
+          if ($loomJson->) {
+            # code...
+          } else $this->throwIssue("PROBLEM", "'loom.json' is not useful. Check read/write permissions. OR file is not useful.");
         } else $this->throwIssue("PROBLEM", "Current directory is not initted. Please run 'init' before.");  
       } else self::throwIssue("PROBLEM", "Current directory is not useful. Check for read/write permissions.");
     }

@@ -12,7 +12,7 @@
      * Tells whether the current state is locked to a known state
      * 
      * @param JsonFile $jsonFile the loom.json file to check for
-     * @return bool
+     * @return bool true on success, false on failure
      **/
     public static function isCurrentStateLocked(JsonFile $jsonFile)
     {

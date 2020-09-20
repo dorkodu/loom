@@ -1,7 +1,6 @@
 <?php
 	namespace Loom\Json;
 	
-	use Loom\Logger;
 	use Loom\Json\JsonPreprocessor;
 	
 	class JsonFile {
@@ -17,7 +16,7 @@
     }
     
     public function isUseful() {
-      return Logger::isUsefulFile($this->path);
+      return (is_file($this->path) && is_readable($this->path) && is_writable($this->path));
     }
 		
     public function read() {
@@ -33,7 +32,7 @@
      */
     public function write(array $hash, $prettyPrint = false) {
 			if ($this->path === 'php://memory') {
-				Logger::putFileContents($this->path, JsonPreprocessor::encode($hash, $prettyPrint));
+				file_put_contents($this->path, JsonPreprocessor::encode($hash, $prettyPrint));
 				return;
 			}
 			$dir = dirname($this->path);
@@ -61,9 +60,9 @@
      */
     private function putContentsIfModified($path, $content)
     {
-        $currentContent = Logger::getFileContents($path);
+        $currentContent = file_get_contents($path);
         if (!$currentContent || ($currentContent != $content)) {
-            return Logger::putFileContents($path, $content);
+            return file_put_contents($path, $content);
         }
         return 0;
     }
