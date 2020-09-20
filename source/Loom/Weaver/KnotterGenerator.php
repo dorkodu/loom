@@ -39,12 +39,14 @@
               $psr4NamespaceAutoloadScript = <<<PHP
 
                 # psr-4 namespace autoloading
+
                 \$universalNamespaces = array($psr4ArrayString);
                 \$psr4Autoloader = new Psr4Autoloader();
+                \$psr4Autoloader->register();
+
                 foreach (\$universalNamespaces as \$namespace => \$path) {
                   \$psr4Autoloader->addNamespace(\$namespace, \$path);
                 }
-                \$psr4Autoloader->register();
 
               PHP;
               $rawContent .= $psr4NamespaceAutoloadScript;
@@ -60,6 +62,7 @@
               $classmapAutoloadScript = <<<PHP
                 
                 # classmap autoloading
+
                 \$universalClassmap = array($classmapArrayString);
                 \$classmapWeaver = new ClassmapAutoloader();
                 \$classmapWeaver->register(\$universalClassmap);
@@ -86,7 +89,7 @@
       $nsStringsList = array();
       foreach ($namespaces as $namespace => $baseDir) {
         $namespace = str_replace('\\', '\\\\', $namespace);
-        array_push($nsStringsList, "'".$namespace."' => array('$baseDir')");
+        array_push($nsStringsList, "'".$namespace."' => '$baseDir'");
       }
     
       $content = "";
