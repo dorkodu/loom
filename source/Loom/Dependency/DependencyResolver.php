@@ -9,19 +9,22 @@
   {
     /**
      * Returns the knotted array for a given package
-     * @param JsonFile $jsonFile
+     *
+     * @param array $containerArray the root array of loom.json
+     * 
      * @return false on failure
      * @return array the required array for package
      */
-    protected static function getKnottedArray($knottedArray)
+    protected static function getKnottedArray(array $rootArray)
     {
-      if (is_array($knottedArray) && !empty($knottedArray)) {
-        return $knottedArray;
+      if (!empty($rootArray)) {
+        return self::getArrayFromArray("knotted", $rootArray);
       } else return false; # stupid required array
     }
 
     /**
      * Returns an array element from an array
+     * 
      * @return false on failure
      * @return array on success
      */
@@ -37,11 +40,11 @@
     }
 
     /**
-     * Parses the knotted attribute of an assoc array of loom.json and 
-     * returns a meaningful autoload's list for that package
+     * Parses the 'knotted' attribute of the root array of loom.json and 
+     * returns a meaningful knotted's array
      * @param array $jsonAssocArray
      */
-    public static function resolveKnotteds(array $jsonAssocArray)
+    protected static function resolveKnotteds(array $jsonAssocArray)
     {
       $knotteds = self::getKnottedArray($jsonAssocArray);
       if ($knotteds !== false) {

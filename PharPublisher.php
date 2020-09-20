@@ -39,7 +39,7 @@
     # a simple method to echo something to CLI
     private static function consoleLog($message)
     {
-      echo PHP_EOL.">> ".$message.PHP_EOL.PHP_EOL;
+      echo PHP_EOL."> ".$message.PHP_EOL;
     }
 
     # sets a value to whether to use buffering

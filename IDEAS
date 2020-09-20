@@ -1,0 +1,2 @@
+# Find a solution to represent issues, and how they should outputted to user
+# Abstract the terminal IO from Loom itself.

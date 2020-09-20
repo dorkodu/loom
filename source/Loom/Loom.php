@@ -1,12 +1,16 @@
 <?php
 	namespace Loom;
-	
-	use Loom\Logger;
+
+  use Loom\Dependency\DependencyLocker;
+  use Loom\Dependency\DependencyResolver;
+  use Loom\Logger;
   use Loom\Utils\PrimitiveTest;
   use Loom\Utils\CLITinkerer;
   use Loom\Utils\TerminalUI;
-	
-	class Loom {
+  use Loom\Json\JsonFile;
+  use Loom\Json\JsonPreprocessor;
+
+  class Loom {
     protected $projectDirectory;
     
     /**
@@ -22,24 +26,12 @@
      * Loom's igniter :D
 		 */
 		public function run() {
-			if(true) {
-				/**
-         * checks for updates
-				 * checks if config is OK
-				 * checks for loom.json, loom.lock files
-         * 
-         */
-       $this->route();
-      } else {  # cannot setup the environment
-        CLITinkerer::writeLine("Cannot set the environment. Check if current directory is useful");
-      }
-    }
-		
-    /**
-     * Simply routes according to user commands.
-     **/
-    public function route()
-    {
+      /**
+       * checks for updates
+       * checks if config is OK
+       * checks for loom.json, loom.lock files
+       * 
+       */
       switch (CLITinkerer::getArgument(1)) {
         case 'about':
           $this->about();
@@ -53,38 +45,13 @@
         case 'weave':
           $this->weave();
           break;
+        case 'install':
+          $this->install();
+          break;
         default:
           $this->greet();
           break;
       }
-    }
-		
-		public function setTheEnvironment() {
-			# check for whether environment is already set
-			if($this->isEnvironmentReady()) {
-				return true; # project is already using Loom
-			} else {
-				if(Logger::isUsefulDirectory($this->projectDirectory)) {
-					if(Logger::createDirectory($this->projectDirectory."/loot") && Logger::createFile($this->projectDirectory."/loom.json") && Logger::createFile($this->projectDirectory."/loom.lock")) {
-						return true;
-					} else return false; # cannot create the required directory or files
-				} else return false; # cannot open the directory	
-			}
-		}
-		
-		/* name: isEnvironmentReady
-		 * @return boolean
-		 * check for if the project is already using Loom
-		 */
-		public function isEnvironmentReady() {
-			if(!empty($this->projectDirectory)) {
-				if(Logger::isUsefulDirectory($this->projectDirectory)) {
-					# look for : /loot, loom.json, loom.lock
-					if(Logger::isUsefulDirectory($this->projectDirectory."/loot") && Logger::isUsefulFile($this->projectDirectory."/loom.json") && Logger::isUsefulFile($this->projectDirectory."/loom.lock"))
-						return true;
-					else return false; # required stuff doesnt exist
-				} else return false; # project directory is not usable
-			} else return false; # projectDir is empty
     }
 
     /** Prints the logo of Loom */
@@ -118,13 +85,13 @@
       CLITinkerer::writeLine($aboutString);
       TerminalUI::underDashedTitle("Author");
       TerminalUI::titledParagraph("Doruk Dorkodu", "Software Engineer, Founder & Chief @ Dorkodu".PHP_EOL."  See more 'https://doruk.dorkodu.com".PHP_EOL."  Email : doruk@dorkodu.com".PHP_EOL);
-
     }
 
     /**
      * Simply greets users. No magic xD
      */
-    public function greet() {
+    public function greet() 
+    {
       $this->renderBrand();
       TerminalUI::underDashedTitle("Loom - the Minimalist Dependency Utility for PHP");
       
@@ -148,7 +115,7 @@
     {
       $this->greet();
       CLITinkerer::breakLine();
-      CLITinkerer::writeLine("If you are just curious about Loom, type 'about' command to know more.");
+      CLITinkerer::writeLine("  If you are just curious about Loom, type 'about' command to know more.");
       CLITinkerer::breakLine();
       
       # how to use loom ?
@@ -188,13 +155,53 @@
     public function init()
     {
       /**
-       * create :
-       * an empty template loom.json
-       * generate that template's  hash and lock the state into loom.lock
+       * if not already used by Loom, then :
+       * -> CREATE :
+       *    - an empty template loom.json
+       *    - generate that template's  hash and lock the state into loom.lock
        */
-      
-      
-      
+       if (Logger::isUsefulDirectory($this->projectDirectory)) {
+          if ($this->isInittedDirectory($this->projectDirectory)) {
+            self::consoleLog("Already initted directory.");
+            return true;
+          } else {
+            # dir is useful
+            # loom.json production
+            $loomJsonPath = $this->projectDirectory."/loom.json";
+            if (Logger::createFile($loomJsonPath)) {
+              
+              $loomJson = new JsonFile($loomJsonPath);
+              unset($loomJsonPath);
+              $loomJsonTemplate = $this->generateLoomJsonTemplate();
+              $loomJson->write($loomJsonTemplate, true);
+
+              if(DependencyLocker::lock($loomJson)) {
+                self::consoleLog("Loom successfully initialised the current directory.");
+                return true;
+              } else {
+                self::throwIssue("PROBLEM", "Couldn't lock the current state.");
+              }
+            } else {
+              self::throwIssue("PROBLEM", "Couldn't create loom.json file.");
+            }
+          }
+       } else {
+        self::throwIssue("PROBLEM", "Current directory is not useful. Check read/write permissions.");
+       }
+    }
+
+    /**
+     * Checks if the directory is already processed by Loom
+     *
+     * @return boolean
+     */
+    public function isInittedDirectory()
+    {
+      if (Logger::isUsefulFile($this->projectDirectory."/loom.json") && Logger::isUsefulFile($this->projectDirectory."/loom.lock")) {
+        return true;
+      } else {
+        return false; # no loom.json || loom.lock file ?!
+      }
     }
 
     /**
@@ -205,13 +212,20 @@
       /**
        * read loom.json and loom.lock, compare states :
        * 
-       * --if state is changed 
+       * --if state is changed
        *    -> create loot/ and fill it
        *    -> generate a fresh autoloading script, and lock the state.
-       * --else 
+       * --else
        *    -> dont touch it :P
        */
-      CLITinkerer::writeLine("weaved!");
+      if (Logger::isUsefulDirectory($this->projectDirectory)) {
+        self::consoleLog("Directory is useful. Loom is running.");
+        
+        if ($this->isInittedDirectory()) {
+          self::consoleLog("Current directory is initted. Look for dependency declarations.");
+          
+        } else $this->throwIssue("PROBLEM", "Current directory is not initted. Please run 'init' before.");  
+      } else self::throwIssue("PROBLEM", "Current directory is not useful. Check for read/write permissions.");
     }
 
     /**
@@ -224,6 +238,29 @@
        * if state is changed generate a fresh autoloading script, and lock the state.
        * else dont touch it :P
        */
-      CLITinkerer::writeLine("install you mean?");
+      self::throwIssue("NOTICE", "This feature is out of order.");
+    }
+
+    public static function consoleLog($text)
+    {
+      CLITinkerer::writeLine("> ".$text);
+    }
+
+    public static function throwIssue($type, $message)
+    {
+      CLITinkerer::writeLine("> ".$type." : ".$message);
+      exit;
+    }
+
+    /**
+     * Generates an empty, template string for loom.json
+     * 
+     * @return array the template string content of a loom.json file
+     **/
+    public function generateLoomJsonTemplate()
+    {
+      $classmap = array();
+      $namespaces = array();
+      return array("knotted" => array("classmap" => $classmap, "namespaces" => $namespaces));
     }
 	}

@@ -3,8 +3,8 @@
   require "PharPublisher.php";
 
   $greet = function () {
-    echo PHP_EOL.">> Dorkodu Phar Publisher";
-    echo PHP_EOL.">> This code will build and publish Loom.";
+    echo PHP_EOL."> Dorkodu Phar Publisher";
+    echo PHP_EOL."> This code will build and publish Loom.";
   };
 
   $simplestPhar = new PharPublisher('loom.phar', './source', './publish');
@@ -15,4 +15,4 @@
   $timestamp = time();
   $newName = "loom";
   rename("publish/loom.phar", "publish/".$newName);
-  echo ">> Newest Loom is :: $newName".PHP_EOL;
+  echo "> Newest Loom is :: $newName".PHP_EOL.PHP_EOL;

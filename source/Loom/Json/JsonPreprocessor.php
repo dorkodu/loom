@@ -14,8 +14,10 @@
     public static function encode($data, $toPretty = false, $unescapeUnicode = false, $unescapeSlashes = false) {
 			if (PHP_VERSION_ID >= 50400) {
 				// decide to pretty print or not
-				if($toPretty === true) $json = json_encode($data, JSON_PRETTY_PRINT);
-				else $json = json_encode($data);
+        if($toPretty === true) 
+          $json = json_encode($data, JSON_PRETTY_PRINT);
+        else 
+          $json = json_encode($data);
 				
 				if (false === $json) return false;
 				

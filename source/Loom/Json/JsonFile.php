@@ -31,9 +31,9 @@
 		 * @param  array $hash ·· writes hash into json file
      * @param  int 	 $options ·· json_encode options (defaults to JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
      */
-    public function write(array $hash, $options = 448) {
+    public function write(array $hash, $prettyPrint = false) {
 			if ($this->path === 'php://memory') {
-				Logger::putFileContents($this->path, JsonPreprocessor::encode($hash, $options));
+				Logger::putFileContents($this->path, JsonPreprocessor::encode($hash, $prettyPrint));
 				return;
 			}
 			$dir = dirname($this->path);
@@ -44,7 +44,7 @@
 			$retries = 3;
 			while ($retries--) {
 				try {
-					$this->putContentsIfModified($this->path, JsonPreprocessor::encode($hash, $options));
+					$this->putContentsIfModified($this->path, JsonPreprocessor::encode($hash, $prettyPrint));
 					break;
 				} catch (\Exception $e) {
 					if ($retries) {

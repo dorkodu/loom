@@ -77,22 +77,21 @@
     /**
      * Puts the lock hash to given file path
      * 
+     * @param string $hash content that to put in loom.lock
      * @param string $filePath the loom.lock file path
-     * @return false when the content is empty or file is useless
-     * @return string the content of loom.lock file
+     * 
+     * @return false on failure
+     * @return true on success
      **/
     private static function pushLockState($hash, $filePath)
     {
-      $hashContent = Logger::putFileContents($filePath, $hash);
-      if (is_string($hashContent) && !empty($hashContent)) {
-        return $hashContent;
-      } else return false;
+      return Logger::putFileContents($filePath, $hash);
     }
 
     /**
      * Locks the dependency to the current state
      * @param JsonFile $jsonFile the loom.json of the project
-     * @return boolean on failure
+     * @return false on failure
      * @return true on success
      */
     public static function lock(JsonFile $jsonFile)
@@ -103,9 +102,9 @@
         $lockFilePath = self::getLockFilePath($directoryPath);
         if ($lockFilePath !== false) {
           $currentState = self::generateLockHash($jsonContent);
-          self::pushLockState($currentState, $lockFilePath);
+          return self::pushLockState($currentState, $lockFilePath);
         } else return false;
-      } else return false; 
+      } else return false;
     }
   }
   

@@ -12,7 +12,7 @@
     
     public static function underDashedTitle($message)
     {
-      CLITinkerer::writeLine("  \033[1m".$message."\033[0m".PHP_EOL."  --------------------------------");
+      CLITinkerer::writeLine("  \033[1m".$message."\033[0m".PHP_EOL."  --------------------------------".PHP_EOL);
     }
 
     public static function pipeTitle($message)
