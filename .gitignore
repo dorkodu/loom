@@ -1,5 +1,4 @@
 source/Loom/bootstrap.php
-publish/
 loom.json
 loom.lock
 loot/
