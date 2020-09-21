@@ -135,8 +135,8 @@
       if (array_key_exists($pureClassName, $this->classmap)) {
         $filePath = $this->classmap[$pureClassName];
         require $filePath;
-        unset($filePath);
         unset($pureClassName);
+        
         if (class_exists($class)) {
           return $filePath;
         } else return false; # class doesnt exist bro ?!

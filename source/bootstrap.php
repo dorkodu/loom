@@ -4,7 +4,7 @@
   use \Loom\Utils\Psr4Autoloader;
   use \Loom\Loom;
 
-  error_reporting(E_ALL);
+  error_reporting(0);
 
 
   $psr4Autoloader = new Psr4Autoloader();

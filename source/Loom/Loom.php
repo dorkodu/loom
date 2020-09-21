@@ -251,10 +251,9 @@
                     $lockResult = DependencyLocker::lock($loomJson);
                     if ($lockResult) {
                       $this->consoleLog("Locked the current state.");
-                      
-                    } else {
-                      
-                    }
+                      $this->consoleLog("Successfully weaved your dependencies.");
+                      $this->consoleLog("Done.");
+                    } else $this->breakRunning("PROBLEM", "Couldn't lock the state.");
 
                   } else $this->breakRunning("PROBLEM", "Couldn't generate or save the new weaver script.");
                
@@ -368,8 +367,9 @@
             return false;
         }
 
-        if (!Logger::putFileContents($loomWeaverPath, $contents))
-          return false;  
+        if (Logger::putFileContents($loomWeaverPath, $contents))
+          return true;
+        else return false;
       } else return false;
     }
 	}
