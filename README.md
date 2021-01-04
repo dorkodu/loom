@@ -12,7 +12,7 @@ See [https://libre.dorkodu.com/loom](https://libre.dorkodu.com/loom) for further
 Installation / Usage
 --------------------
 
-Download and install Loom by following the [official instructions] (https://libre.dorkodu.com/loom/#download).
+Download and install Loom by following the [official instructions](https://libre.dorkodu.com/loom/#download).
 
 For usage, see [the documentation](https://libre.dorkodu.com/loom).
 
