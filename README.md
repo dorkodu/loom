@@ -1,34 +1,35 @@
+![Loom Logo](http://images.dorkodu.com/loom.png)
 Loom - the Minimalist Dependency Utility for PHP
 ================================================
 
-Loom helps you handle and automate the autoloading process (we say weaving) of (in)dependent code bundles in PHP applications.
+Loom helps you handle and automate the autoloading process (weaving) of (in)dependent code bundles in PHP applications.
 
-See [https://opensource.dorkodu.com/loom](https://opensource.dorkodu.com/loom) for further knowledge and documentation.
+See [https://libre.dorkodu.com/loom](https://libre.dorkodu.com/loom) for further knowledge and documentation.
 
 
 Installation / Usage
 --------------------
 
-Download and install Loom by following the [official instructions] (https://opensource.dorkodu.com/loom/#download).
+Download and install Loom by following the [official instructions] (https://libre.dorkodu.com/loom/#download).
 
-For usage, see [the documentation](https://opensource.dorkodu.com/loom).
+For usage, see [the documentation](https://libre.dorkodu.com/loom).
 
 Requirements
 ------------
 
-PHP 5.3.2 or above (at least 5.3.4 recommended to avoid potential bugs)
+PHP 5.6 or higher (at least 7.0+ recommended to avoid potential bugs)
 
 Author
 -------
 
-- Doruk Dorkodu | [GitHub](https://github.com/dorkodu)  | [Twitter](https://twitter.com/dorkodu) | <doruk@dorkodu.com> | [doruk.dorkodu.com](https://doruk.dorkodu.com)
+- Doruk Dorkodu | [GitHub](https://github.com/dorkodu)  | [Twitter](https://twitter.com/dorukdorkodu) | <doruk@dorkodu.com> | [dorkodu.com](https://dorkodu.com)
 
-See also the list of [contributors](https://knotstor.com/dorkodu/loom/contributors) who participated in this project.
+See also the list of [projects](https://libre.dorkodu.com) that we share to the community.
 
 Security Reports
 ----------------
 
-Please send any sensitive issue to [opensource@dorkodu.com](mailto:opensource@dorkodu.com). Thanks!
+Please send any sensitive issue to [public@dorkodu.com](mailto:public@dorkodu.com). Thanks!
 
 License
 -------
