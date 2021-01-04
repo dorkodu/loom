@@ -1,4 +1,4 @@
-![Loom Logo](http://images.dorkodu.com/loom.png)\
+![Loom Logo](http://images.dorkodu.com/loom.png)
 
 # Loom
 
