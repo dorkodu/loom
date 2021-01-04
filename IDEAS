@@ -1,3 +1,3 @@
 # Find a solution to represent issues, and how they should outputted to user
 # Use Exceptions, and throw them, instead of giving notices or problems.
-# Abstract the terminal IO from Loom itself.
+# Abstract the Terminal I/O from Loom itself.
