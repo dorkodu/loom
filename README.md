@@ -31,7 +31,7 @@ See also the list of [projects](https://libre.dorkodu.com) that we share to the 
 Security Reports
 ----------------
 
-Please send any sensitive issue to [public@dorkodu.com](mailto:public@dorkodu.com). Thanks!
+Please send any sensitive issue to [libre@dorkodu.com](mailto:libre@dorkodu.com). Thanks!
 
 License
 -------
