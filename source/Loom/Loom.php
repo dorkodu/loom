@@ -85,25 +85,25 @@
 
       CLITinkerer::writeLine($aboutString);
       TerminalUI::underDashedTitle("Author");
-      TerminalUI::titledParagraph("Doruk Dorkodu", "Software Engineer, Founder & Chief @ Dorkodu".PHP_EOL."  See more 'https://doruk.dorkodu.com".PHP_EOL."  Email : doruk@dorkodu.com".PHP_EOL);
+      TerminalUI::titledParagraph("Doruk Dorkodu", "Software Engineer, Founder & Chief @ Dorkodu".PHP_EOL."  See more 'https://dorkodu.com".PHP_EOL."  Email : doruk@dorkodu.com".PHP_EOL);
     }
 
     /**
      * Simply greets users. No magic xD
      */
-    public function greet() 
+    public function greet()
     {
       $this->renderBrand();
       TerminalUI::underDashedTitle("Loom - the Minimalist Dependency Utility for PHP");
       
       $greetString = "
   Loom helps you handle and automate the autoloading process of (in)dependent code bundles in PHP applications.
-  See 'https://opensource.dorkodu.com/loom' for further knowledge and documentation.
+  See 'https://libre.dorkodu.com/loom' for further knowledge and documentation.
 
   Proudly brought you by Dorkodu.
   See how we change the future with Dorkodu @ 'https://dorkodu.com'
   
-  Type 'help' to get a list of useful commands.
+  Use 'help' to get a list of useful commands.
       ";
 
       CLITinkerer::writeLine($greetString);

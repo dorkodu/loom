@@ -1,4 +1,7 @@
 <?php
+  
+  error_reporting(0);
+  
   class PharPublisher
   {
     protected $sourceRoot;            # source root directory
