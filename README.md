@@ -8,7 +8,7 @@ Loom helps you automate the autoloading process (weaving, as we say :D) of (in)d
 It's a simple CLI util written in PHP. We created it to solve autoloading problem in a simple & efficient way.\
 It is minimalistic, it works offline, and on a per project basis.
 
-See [the project website](https://libre.dorkodu.com/loom) for further knowledge and documentation.
+See [the project website](https://libre.dorkodu.com/loom) for more knowledge and documentation.
 
 
 Installation / Usage
